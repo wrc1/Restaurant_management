@@ -12,3 +12,39 @@ services:
     volumes:
       - ./server:/app
       - /app/node_modules
+    networks:
+      - webnet
+    depends_on:
+      - postgres
+
+  postgres:
+    container_name: postgres
+    image: postgres:alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    env_file:
+      - docker.db
+    networks:
+      - webnet
+
+  pgadmin:
+    links:
+      - postgres:postgres
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    ports:
+      - "8080:80"
+    volumes:
+       - pgadmin:/var/lib/pgadmin
+    env_file:
+      - docker.db
+    networks:
+      - webnet
+
+networks:
+  webnet:
+volumes:
+  pgdata:
+  pgadmin:
