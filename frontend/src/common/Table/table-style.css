@@ -1,0 +1,14 @@
+.react-bootstrap-table table { table-layout: auto; }
+
+.single-row {
+  margin: 0 0 0 11px;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.04);
+  background-color: white;
+}
+
+.thead-dark {
+  background: #212529;
+  color: white;
+}
+
