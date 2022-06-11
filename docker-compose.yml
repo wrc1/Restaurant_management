@@ -1,0 +1,14 @@
+version: '3.2'
+services:
+  server:
+    container_name: server
+    command: npm run start:dev
+    build:
+      context: server
+      dockerfile: dockerfile
+      target: development
+    ports:
+      - 3000:3000
+    volumes:
+      - ./server:/app
+      - /app/node_modules
