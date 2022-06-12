@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import App from './App';
+import { store } from './redux/store'
+import { Provider } from 'react-redux'
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -11,7 +13,9 @@ root.render(
   //   <App />
   // </React.StrictMode>
   <div>
-        <App />
+   <Provider store={store}>
+    <App />
+   </Provider>
   </div>
 );
 

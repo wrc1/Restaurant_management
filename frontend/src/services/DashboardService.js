@@ -29,4 +29,20 @@ export class DashboardService {
       icon: 'minus-circle',
     }]
   }
+
+  static tabs = [
+    {
+      index: 0,
+      title: 'location 1'
+    },
+    {
+      index: 1,
+      title: 'location 2'
+    },
+    {
+      index: 2,
+      title: 'location 3'
+    },
+
+  ]
 }

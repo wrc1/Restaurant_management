@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
-import { Table } from "../common/Table/Table";
-import { ActionsFormatter } from "./components/ActionsFormatter/ActionsFormatter";
 import { Separator } from "../common/Seprator/Separator";
 import { PieGraph } from "../common/PieGraph/PieGraph";
 import { Dialog } from "../common/Dialog/Dialog";
@@ -9,63 +7,15 @@ import { StatusType } from "./components/StatusType/StatusType";
 import { CreateUserForm } from '../common/Templates/CreateUserForm'
 import { DashboardService } from '../services/DashboardService';
 import style from './style'
+import { Tabs } from "../common/Tabs/Tabs";
+import { DashboardTableWrapper } from "./components/DashboardTableWrapper/DashboardTableWrapper";
 
 export const Dashboard = () => {
   let dashboardService = null;
   const [service, setService] = useState({})
   const [openDialog, setOpenDialog] = useState(false);
-  const [employees, setEmployees] = useState([]);
-  const [menuAction, setMenuAction] = useState({ type: "null", data: {} });
   const [isDeleteAction, setDeleteAction] = useState(false);
-
-  const actionsFormatter = (cell, row) =>
-    <ActionsFormatter
-      id={row.id}
-      service={service}
-    />;
-
-  const columns = [{
-    dataField: 'id',
-    text: 'ID'
-  }, {
-    dataField: 'name',
-    text: 'Name'
-  },
-  {
-    dataField: 'lastName',
-    text: 'Last Name'
-  },
-  {
-    dataField: 'email',
-    text: 'Email'
-  },
-  {
-    dataField: 'phone',
-    text: 'Phone'
-  },
-  {
-    dataField: 'number_restaurants',
-    text: 'Restaurants'
-  },
-  {
-    dataField: 'status',
-    text: 'Status'
-  },
-  {
-    dataField: 'actions',
-    text: 'Actions',
-    isDummyField: true,
-    csvExport: false,
-    attrs: { title: 'action column' },
-    events: {
-      onClick: (e, column, columnIndex, row, rowIndex) => {
-        setMenuAction(prev => ({ ...prev, data: row }))
-      },
-    },
-    formatter: actionsFormatter,
-  },
-
-  ];
+  const [menuAction, setMenuAction] = useState({ type: "null", data: {} });
 
   const onCreate = () => {
     setOpenDialog(true);
@@ -115,39 +65,11 @@ export const Dashboard = () => {
   ];
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const res = await axios.get('http://localhost:5000')
-        const users = res.data.map(user => {
-          return {
-            id: user.userId,
-            ...user
-          }
-        })
-        setEmployees(users);
-
-      } catch (e) {
-        console.log(e.message);
-        setEmployees([]);
-      }
-    }
-    fetchData();
-  }, []);
-
-  useEffect(() => {
     dashboardService = new DashboardService();
     dashboardService.setMenuEvent(onEdit, onDelete);
     setService(dashboardService)
   }, [])
 
-  useEffect(() => {
-    if (menuAction.type === "delete") {
-      axios.delete(`http://localhost:5000/delete/${menuAction.data.userId}`)
-      setDeleteAction(false);
-    } else if (menuAction.type === "edit") {
-      setOpenDialog(true);
-    }
-  }, [menuAction])
 
   return (
     <style.Dashboard>
@@ -203,6 +125,7 @@ export const Dashboard = () => {
           <div className="section left-section">
             <i className="icon-b bi bi-search"></i>
             <Separator />
+            <Tabs tabs={DashboardService.tabs} />
           </div>
           <div className="section right-section">
             <button
@@ -212,13 +135,11 @@ export const Dashboard = () => {
             >
               <i class="bi bi-person-plus-fill" fill="#fffff"></i>
               Create user</button>
-
           </div>
         </style.TableToolbar>
-        <Table
-          data={employees}
-          columns={columns}
-          menuActions={() => { }}
+        <DashboardTableWrapper
+          menuActions={setMenuAction}
+          service={service}
         />
       </style.Container>
     </style.Dashboard>
