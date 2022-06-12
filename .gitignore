@@ -11,3 +11,7 @@ server/node_modules
 
 */dist
 
+
+infra/.terraform*
+infra/plan
+
