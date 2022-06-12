@@ -1,5 +1,19 @@
 version: '3.2'
 services:
+  client:
+    container_name: frontend
+    build:
+      context: frontend
+      dockerfile: dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - webnet
+    depends_on:
+      - server
   server:
     container_name: server
     command: npm run start:dev
