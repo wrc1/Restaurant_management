@@ -4,10 +4,11 @@ import { AppService } from './app.service';
 import { EmployeeModule } from './employee/employee.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [EmployeeModule, AuthModule, UsersModule],
+  imports: [ConfigModule.forRoot(), EmployeeModule, AuthModule, UsersModule],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
