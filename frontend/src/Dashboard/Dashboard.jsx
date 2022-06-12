@@ -11,23 +11,21 @@ import { Tabs } from "../common/Tabs/Tabs";
 import { DashboardTableWrapper } from "./components/DashboardTableWrapper/DashboardTableWrapper";
 
 export const Dashboard = () => {
-  let dashboardService = null;
-  const [service, setService] = useState({})
   const [openDialog, setOpenDialog] = useState(false);
-  const [isDeleteAction, setDeleteAction] = useState(false);
-  const [menuAction, setMenuAction] = useState({ type: "null", data: {} });
+  const [rowOperation, setRowOperation] = useState({})
+
+  const onRowOperation = data => {
+    setRowOperation(data);
+    setOpenDialog(true);
+  }
 
   const onCreate = () => {
     setOpenDialog(true);
   }
 
   const onCloseDialog = () => {
-    setOpenDialog(() => !setOpenDialog);
-    setMenuAction({ type: "null", data: {} });
-  }
-
-  const onUpdate = data => {
-    console.log(data);
+    setOpenDialog(() => !openDialog);
+    setRowOperation({ type: null, data: null });
   }
 
   const onSubmit = async formData => {
@@ -37,21 +35,8 @@ export const Dashboard = () => {
       status: '1',
       ...formData.data,
     }
-    const res = await axios.post(`http://:5000/${type}`, extendData)
+    const res = await axios.post(`http://localhost:5000/${type}`, extendData)
     onCloseDialog();
-  }
-
-  const onEdit = e => {
-    setMenuAction(prev => ({ ...prev, type: 'edit' }))
-  }
-
-  const onDelete = e => {
-    setMenuAction(prev => ({ ...prev, type: 'delete' }))
-  }
-
-  const onShowUser = e => {
-    e.stopPropagation();
-    console.log("show user");
   }
 
   const pieData1 = [
@@ -65,9 +50,7 @@ export const Dashboard = () => {
   ];
 
   useEffect(() => {
-    dashboardService = new DashboardService();
-    dashboardService.setMenuEvent(onEdit, onDelete);
-    setService(dashboardService)
+    new DashboardService();
   }, [])
 
 
@@ -78,7 +61,8 @@ export const Dashboard = () => {
         handleClose={onCloseDialog}
         Component={CreateUserForm}
         callback={onSubmit}
-        data={menuAction}
+        data={rowOperation}
+        key={rowOperation.type}
       >
       </Dialog>
       <style.Header>
@@ -138,8 +122,10 @@ export const Dashboard = () => {
           </div>
         </style.TableToolbar>
         <DashboardTableWrapper
-          menuActions={setMenuAction}
-          service={service}
+          service={DashboardService}
+          resetMenu={openDialog}
+          dialogAction={setOpenDialog}
+          onRowOperation={onRowOperation}
         />
       </style.Container>
     </style.Dashboard>

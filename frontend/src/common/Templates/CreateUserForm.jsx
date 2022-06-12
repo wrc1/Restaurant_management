@@ -21,8 +21,13 @@ export const CreateUserForm = ({ onClose, callback, formData }) => {
   }
 
   useEffect(() => {
+    console.log(formData?.data)
     reset(formData?.data);
   }, [formData?.data]);
+
+  useEffect(() => {
+    return () => { }
+  })
 
   return (
     <style.CreateUserForm>

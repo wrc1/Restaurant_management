@@ -1,36 +1,36 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import style from './style';
 
-export const Login = () => {
+export const Login = ({ loginCallback }) => {
+  const [formData, setFormData] = useState({});
 
-  useEffect(() => {
-    var working = false;
-    // $('.login').on('submit', function (e) {
-    //   e.preventDefault();
-    //   if (working) return;
-    //   working = true;
-    //   var $this = $(this),
-    //     $state = $this.find('button > .state');
-    //   $this.addClass('loading');
-    //   $state.html('Authenticating');
-    //   setTimeout(function () {
-    //     $this.addClass('ok');
-    //     $state.html('Welcome back!');
-    //     setTimeout(function () {
-    //       $state.html('Log in');
-    //       $this.removeClass('ok loading');
-    //       working = false;
-    //     }, 4000);
-    //   }, 3000);
-    // });
-  }, [])
-
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
     let formData = {}
     const data = new FormData(e.currentTarget)
     for (const [name, value] of data) {
       formData[name] = value;
+    }
+    try {
+
+      let data = JSON.stringify({
+        password: formData.password,
+        username: formData.username
+      })
+
+      const res = await axios.post('http://localhost:5000/auth/login', data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+      const { access_token } = res.data;
+      localStorage.setItem("token", access_token)
+      loginCallback(true);
+    } catch (error) {
+
+      console.log(error.message)
+      setFormData({ username: "", password: "" });
     }
   }
 
@@ -39,9 +39,23 @@ export const Login = () => {
       <div className="wrapper">
         <form className="login" onSubmit={handleSubmit}>
           <p className="title">Log in</p>
-          <input name="username" type="text" placeholder="Username" autoFocus />
+          <input value={formData.username}
+            onChange={e => setFormData({
+              [e.target.name]: e.target.value
+            })}
+            name="username"
+            type="text"
+            placeholder="Username"
+            autoFocus />
           <i className="fa fa-user"></i>
-          <input name="password" type="password" placeholder="Password" />
+          <input
+            onChange={e => setFormData({
+              [e.target.name]: e.target.value
+            })}
+            value={formData.password}
+            name="password"
+            type="password"
+            placeholder="Password" />
           <i className="fa fa-key"></i>
           <a href="#">Forgot your password?</a>
           <button>

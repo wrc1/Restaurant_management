@@ -9,14 +9,14 @@ export class DashboardService {
     this.menuEvents = {};
   }
   
-  setMenuEvent (editViewEvent, deleteViewEvent){
+  static setMenuEvent (editViewEvent, deleteViewEvent){
     this.menuEvents = {
       edit: editViewEvent,
       delete: deleteViewEvent
     }
   }
 
-  getMenu() {
+  static getMenu() {
     return [{
       type: 'edit',
       event: this.menuEvents.edit,

@@ -3,9 +3,33 @@ import axios from 'axios';
 import { Table } from "../../../common/Table/Table";
 import { ActionsFormatter } from "../../components/ActionsFormatter/ActionsFormatter";
 
-export const DashboardTableWrapper = ({ setMenuActions, service }) => {
+export const DashboardTableWrapper = ({ service, resetMenu, onRowOperation }) => {
 
   const [employees, setEmployees] = useState([]);
+  const [isDeleteAction, setDeleteAction] = useState(false);
+  const [menuAction, setMenuAction] = useState({ type: null, data: null });
+
+
+  const onEdit = e => {
+    setMenuAction(prev => ({ ...prev, type: 'edit' }))
+  }
+
+  const onDelete = e => {
+    setMenuAction(prev => ({ ...prev, type: 'delete' }))
+  }
+
+  useEffect(() => {
+    if (menuAction.type === 'delete' && menuAction.data) {
+      axios.delete(`http://localhost:5000/delete/${menuAction.data.userId}`)
+    } else if (menuAction.type === 'edit' && menuAction.data) {
+      onRowOperation(menuAction)
+    }
+  }, [menuAction])
+
+  useEffect(() => {
+    service.setMenuEvent(onEdit, onDelete);
+  }, [])
+
 
   const actionsFormatter = (cell, row) =>
     <ActionsFormatter
@@ -49,7 +73,7 @@ export const DashboardTableWrapper = ({ setMenuActions, service }) => {
     attrs: { title: 'action column' },
     events: {
       onClick: (e, column, columnIndex, row, rowIndex) => {
-        setMenuActions(prev => ({ ...prev, data: row }))
+        setMenuAction(prev => ({ ...prev, data: row }))
       },
     },
     formatter: actionsFormatter,

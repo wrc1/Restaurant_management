@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { faker } from '@faker-js/faker';
 
+// Remove after creating UserDto class
 export type User = {
   userId: number,
   phone: string,
@@ -11,6 +12,18 @@ export type User = {
   number_restaurants: string,
   status: string
 };
+
+export type ViewUser = {
+  userId: number,
+  phone: string,
+  name: string,
+  lastName: string,
+  email: string,
+  number_restaurants: string,
+  status: string
+}
+
+
 
 @Injectable()
 export class UsersService {
@@ -66,12 +79,10 @@ export class UsersService {
     this.database.users.splice(index, 1)
   }
 
-  async findAll(): Promise<User[] | []> {
+  async findAll(): Promise<ViewUser [] | []> {
     return this.database.users.map(user => {
-      delete user.password
-      return {
-        ...user
-      }
+      const { password, ...rest } = user
+      return rest
     })
   }
 

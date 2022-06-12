@@ -9,10 +9,21 @@ const Tab = styled.div`
   color: white;
   text-align: center;
   cursor: pointer;
-  background-color: ${props => (props.active ? '#0d6efd' : '')};
-
+  position: relative;
 `;
+
+const TabIndector = styled.div`
+  height: 3px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  background-color: ${props => (props.active ? '#0d6efd' : '')};
+  width: 100%;
+  position: absolute;
+  bottom: -10px;
+  left: 0px;
+`
 
 export default {
   Tab,
+  TabIndector,
 }

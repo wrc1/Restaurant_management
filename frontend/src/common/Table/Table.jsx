@@ -29,10 +29,9 @@ export const Table = ({ data, columns }) => {
     }
   }
 
-
   const selectRow = {
     mode: 'checkbox',
-    clickToSelect: true,
+    clickToSelect: false,
     selected: selected,
     onSelect: handleOnSelect,
     onSelectAll: handleOnSelectAll,

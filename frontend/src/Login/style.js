@@ -13,10 +13,6 @@ const Login = styled.div`
   100% { transform: rotateZ(359deg); }
 }
 
-* {
-  box-sizing: border-box;
-}
-
 .wrapper {
   display: flex;
   align-items: center;
@@ -133,6 +129,8 @@ const Login = styled.div`
     
     transition: all 0.1s ease-out;
       border-bottom-width: 7px;
+            background-color: #0d6efd;
+
     
     .spinner {
       display: block;

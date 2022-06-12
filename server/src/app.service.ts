@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { User, UsersService } from './users/users.service';
+import { User, UsersService, ViewUser } from './users/users.service';
 @Injectable()
 export class AppService {
   constructor(private userService: UsersService) { }
   
-  async getUsers(): Promise<User [] | []> {
+  async getUsers(): Promise<ViewUser [] | []> {
     return await this.userService.findAll();
   }
 

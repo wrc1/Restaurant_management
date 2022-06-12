@@ -11,6 +11,9 @@ export const Tab = ({ onTabClick, index, title, activeIndex }) => {
       <div onClick={() => onActiveTab(index)}>
         {title}
       </div>
+      <style.TabIndector
+        active={activeIndex === index}
+      />
     </style.Tab>
   )
 }
