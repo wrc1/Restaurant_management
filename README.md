@@ -42,38 +42,3 @@ psql -U admin -d restaurant
 ```
 
 This steps are needed to be execute only once. The connection will persist between docker-compose runs as the data will be stored in volumes on the host. To delete all data, simply delete all volumes by running: `docker volume rm $(docker volume ls -q)`
-
-
-## AWS
-
-Deployment to AWS is split to 2 steps:
-1. Create the underline infrastructure
-2. Deploy docker images to ECS
-
-#### Infra
-
-We use [terraform](https://www.terraform.io/) as our main IaC.
-The infrastructure for our app is comprised of:
-1. Networking resources such as a VPC, public & private subnets.
-2. ECS cluster to host, run and scale our running application as a docker container.
-3. RDS Postgres database
-
-##### Prerequisite
-
-1. Install `Terraform` by installing Terraform version manager [tfswitch](https://tfswitch.warrensbox.com/Install/)
-2. cd into `infra` and run `tfswitch` cmd.
-
-##### Deployment
-To deploy the infrastructure:
-1. Authenticate to AWS by setting your credentials:
-    ```bash
-    $ export AWS_ACCESS_KEY_ID="..."
-    $ export AWS_SECRET_ACCESS_KEY="..."
-    $ export AWS_REGION="us-west-1"
-    ```
-2. To deploy to your aws account simply run:
-    ```bash
-    terraform init
-    terraform plan -out plan
-    terraform apply
-    ```

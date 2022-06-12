@@ -37,7 +37,7 @@ export const Dashboard = () => {
       status: '1',
       ...formData.data,
     }
-    const res = await axios.post(`http://localhost:5000/${type}`, extendData)
+    const res = await axios.post(`http://:5000/${type}`, extendData)
     onCloseDialog();
   }
 
