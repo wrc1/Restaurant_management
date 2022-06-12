@@ -1,3 +1,22 @@
+# Frontend
+
+### Docker
+
+```sh
+# Build
+docker build . -t frontend
+
+# Run
+docker run --name frontend -d -p 80:3000 frontend
+
+# View all running containers. Validate your "frontend" is up and running.
+docker ps
+```
+
+Visit http://localhost:80
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
